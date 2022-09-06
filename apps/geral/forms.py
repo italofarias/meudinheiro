@@ -4,6 +4,7 @@ from .models import Categoria
 
 
 class CategoriaForm(forms.ModelForm):
+    # nome = forms.CharField(label='Nome', widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Categoria

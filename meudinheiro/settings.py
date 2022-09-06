@@ -43,7 +43,9 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-APPS_TERCEIROS = []
+APPS_TERCEIROS = [
+    'widget_tweaks',
+]
 
 APPS_PROJETO = [
     'geral.apps.GeralConfig',
