@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import MovimentacaoForm
 from .models import Movimentacao
@@ -17,7 +17,7 @@ def lista_movimentacoes(request):
 
 
 def nova_movimentacao(request):
-    template_name = 'movimentacoes/nova_movimentacoes.html'
+    template_name = 'movimentacoes/nova_movimentacao.html'
     context = {}
     if request.method == 'POST':
         form = MovimentacaoForm(request.POST)
@@ -34,3 +34,32 @@ def nova_movimentacao(request):
         form = MovimentacaoForm()
     context['form'] = form
     return render(request, template_name, context)
+
+
+#def editar_movimentacao(request, pk):
+#    templates_name = ''
+#    context = {}
+#    return render(request, template_name, context)
+
+def editar_movimentacao(request, pk):
+    templates_name = 'movimentacoes/nova_movimentacao.html'
+    context = {}
+    movimentacao = get_object_or_404(Movimentacao, pk=pk)  #ATALHO PARA Movimentacao.object.get(pk:pk)
+    if request.method == 'POST':
+        form = MovimentacaoForm(data=request.POST, instance=movimentacao)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Movimentação akterada com sucesso.')
+            return redirect('movimentacoes:lista.movimentacoes')
+        else:
+            form = MovimentacaoForm(instance=movimentacao)
+            context['form']= form
+    else:
+            form = MovimentacaoForm(instance=movimentacao)
+        context['form'] = form
+        return render(request, template_name, context)
+
+def apagar_movimentacao(request, pk):
+    movimentacao = get_object_or_404(Movimentacao, pk=pk)
+    movimentacao.delete()
+    return redirect('movimentacoes:lista.movimentacoes')
