@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import MovimentacaoForm
@@ -7,6 +8,7 @@ from .models import Movimentacao
 # Create your views here.
 
 
+@login_required
 def lista_movimentacoes(request):
     template_name = 'movimentacoes/lista_movimentacoes.html'
     movimentacoes = Movimentacao.objects.filter(usuario=request.user)
@@ -15,7 +17,7 @@ def lista_movimentacoes(request):
     }
     return render(request, template_name, context)
 
-
+@login_required
 def nova_movimentacao(request):
     template_name = 'movimentacoes/nova_movimentacao.html'
     context = {}
@@ -41,6 +43,7 @@ def nova_movimentacao(request):
 #    context = {}
 #    return render(request, template_name, context)
 
+@login_required
 def editar_movimentacao(request, pk):
     templates_name = 'movimentacoes/nova_movimentacao.html'
     context = {}
@@ -55,10 +58,11 @@ def editar_movimentacao(request, pk):
             form = MovimentacaoForm(instance=movimentacao)
             context['form']= form
     else:
-            form = MovimentacaoForm(instance=movimentacao)
+        form = MovimentacaoForm(instance=movimentacao)
         context['form'] = form
         return render(request, template_name, context)
 
+@login_required
 def apagar_movimentacao(request, pk):
     movimentacao = get_object_or_404(Movimentacao, pk=pk)
     movimentacao.delete()
