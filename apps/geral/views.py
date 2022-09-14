@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .forms import CategoriaForm, LoginForm
+from .forms import CategoriaForm, LoginForm, UserForm
 from .models import Categoria
 
 # Create your views here.
@@ -38,6 +38,17 @@ def login_usuario(request):
     return render(request, template_name, context)
 
 
+def novo_usuario(request):
+    template_name= 'geral/novo_usuario.html'
+    context = {}
+    return render(request, template_name, context)
+
+
+
+
+
+
+
 @login_required
 def logout_usuario(request):
     logout(request)
@@ -54,7 +65,7 @@ def nova_categoria(request):
         form = CategoriaForm(request.POST)
         if form.is_valid():
             f = form.save(commit=False)
-            f.usuario = request.user
+            f.set_password(f.password)
             f.save()
             messages.success(request, 'Categoria adicionada com sucesso.')
             return redirect('geral:lista_categorias')

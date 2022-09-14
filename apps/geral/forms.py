@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 
 from .models import Categoria
 
@@ -15,3 +16,20 @@ class CategoriaForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label='Usuario', required=True)
     password = forms.CharField(label='Senha', required=True, widget=forms.PasswordInput())
+    
+    
+    
+    
+    
+    
+    
+    class UserForm(forms.ModelForm):
+        
+        
+        class Meta:
+            model = User
+            fields = ['first_name','last_name', 'email', 'username', 'password']
+
+
+class UserForm:
+    pass
